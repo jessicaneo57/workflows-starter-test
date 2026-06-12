@@ -97,7 +97,8 @@ type WorkerGlobalScopeEventMap = {
 declare abstract class WorkerGlobalScope extends EventTarget<WorkerGlobalScopeEventMap> {
     EventTarget: typeof EventTarget;
 }
-/* The **`console`** object provides access to the debugging console (e.g., the Web console in Firefox). *
+/* The **`console`** object provides access to the debugging console (e.g., the Web console in Firefox). */
+/**
  * The **`console`** object provides access to the debugging console (e.g., the Web console in Firefox).
  *
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/console)
@@ -148,4 +149,3 @@ interface Console {
     error(...data: any[]): void;
     /**
      * The **`console.group()`** static method creates a new inline group in the Web console log, causing any subsequent console messages to be indented by an additional level, until console/grou
-[truncated for brevity]
