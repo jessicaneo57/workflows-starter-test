@@ -17,18 +17,32 @@ export default {
 
 		// API: Start a new workflow instance
 		if (url.pathname === "/api/workflow/start" && request.method === "POST") {
+			// 1. Authenticate the request from Lark Base
+			const authHeader = request.headers.get("Authorization");
+			if (!authHeader || authHeader !== `Bearer ${env.WORKFLOW_AUTH_TOKEN}`) {
+				return Response.json({ error: "Unauthorized" }, { status: 401 });
+			}
+		
 			try {
+				// 2. Extract data payload sent from Lark Base (Optional but recommended)
+				let larkData = {};
+				if (request.headers.get("content-type")?.includes("application/json")) {
+					larkData = await request.json();
+				}
+		
+				// 3. Pass Lark Base data into your workflow instance
 				const instance = await env.MY_WORKFLOW.create({
 					params: {
 						timestamp: Date.now(),
+						larkPayload: larkData, // Your workflow can now access this data!
 					},
 				});
-
+		
 				return Response.json({
 					instanceId: instance.id,
 					message: "Workflow started successfully",
 				});
-			} catch {
+			} catch (e) {
 				return Response.json(
 					{ error: "Failed to start workflow" },
 					{ status: 500 },
