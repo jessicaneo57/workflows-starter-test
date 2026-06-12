@@ -2,6 +2,10 @@
 export { MyWorkflow } from "./workflow";
 export { WorkflowStatusDO } from "./durable-object";
 
+type WorkerEnv = Env & {
+	WORKFLOW_AUTH_TOKEN: string;
+};
+
 /**
  * Main Worker fetch handler
  *
@@ -12,7 +16,7 @@ export { WorkflowStatusDO } from "./durable-object";
  * - GET /ws - WebSocket connection for real-time updates
  */
 export default {
-	async fetch(request: Request, env: Env): Promise<Response> {
+	async fetch(request: Request, env: WorkerEnv): Promise<Response> {
 		const url = new URL(request.url);
 
 		// API: Start a new workflow instance
@@ -136,4 +140,4 @@ export default {
 
 		return Response.json({ error: "Not Found" }, { status: 404 });
 	},
-} satisfies ExportedHandler<Env>;
+} satisfies ExportedHandler<WorkerEnv>;
